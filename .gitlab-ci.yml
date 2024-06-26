@@ -1,17 +1,3 @@
-image: python:latest
-
-dev-publish:
-  stage: deploy
-  when: manual
-  script:
-    - pip install build twine
-    - python -m build
-    - TWINE_PASSWORD=${INTERNAL_PACKAGE_REGISTRY_TOKEN} TWINE_USERNAME=gitlab-ci-token python -m twine upload  --verbose --repository-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi dist/*
-
-publish:
-  stage: deploy
-  when: manual
-  script:
-    - pip install build twine
-    - python -m build
-    - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=__token__ python -m twine upload dist/*
+include:
+  - project: "gitlab/default-pipelines"
+    file: "/gitlab-ci/PyPi.gitlab-ci.yml"
