@@ -1,6 +1,6 @@
 [project]
 name = "example_package_hamolicious"
-version = "0.0.1"
+version = "1.0.0"
 authors = [{ name = "hamolicious", email = "hamolicious@hamolicious.net" }]
 description = "A small example package"
 readme = "README.md"
