@@ -1,8 +1,8 @@
 [project]
-name = "example_package_hamolicious"
+name = "repo_viewer"
 version = "1.0.0"
 authors = [{ name = "hamolicious", email = "hamolicious@hamolicious.net" }]
-description = "A small example package"
+description = "Seamlessly work with with Github, Gitlab and self-hosted Gitlab repositories using one interface"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
@@ -14,14 +14,16 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 
-[project.urls]
-Homepage = "https://github.com/pypa/sampleproject"
-Issues = "https://github.com/pypa/sampleproject/issues"
+# [project.urls]
+# Homepage = "https://github.com/pypa/sampleproject"
+# Issues = "https://github.com/pypa/sampleproject/issues"
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/replace_example_package_hamolicious/"]
+packages = ["repo_viewer"]
 
+[tool.pytest.ini_options]
+pythonpath = ["."]
