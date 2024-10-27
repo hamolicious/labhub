@@ -1,3 +1,11 @@
 include:
   - project: "gitlab/default-pipelines"
     file: "/gitlab-ci/PyPi.gitlab-ci.yml"
+
+test:
+  stage: test
+  before_script:
+    - pip install -r requirements.txt
+
+  script:
+    - pytest -vv
