@@ -1,12 +1,13 @@
 [project]
-name = "repo_viewer"
+name = "labhub"
 version = "1.0.0"
 authors = [{ name = "hamolicious", email = "hamolicious@hamolicious.net" }]
 description = "Seamlessly work with with Github, Gitlab and self-hosted Gitlab repositories using one interface"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "replace_dep==1.0.0",
+	"python-gitlab==4.12.2",
+	"PyGithub==2.4.0",
 ]
 classifiers = [
     "Programming Language :: Python :: 3",

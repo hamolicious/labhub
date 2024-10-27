@@ -1,8 +1,7 @@
 from os import environ
 from typing import cast
 
-from repo_viewer import GitHubRepo, GitLabRepo
-from repo_viewer.src.files import Directory, File
+from labhub import Directory, File, GitHubRepo, GitLabRepo
 
 
 def create_gh_gl(ref: str = "main"):
