@@ -1,7 +1,8 @@
 from os import environ
+from typing import cast
 
 from repo_viewer import GitHubRepo, GitLabRepo
-from repo_viewer.src.files import File
+from repo_viewer.src.files import Directory, File
 
 
 def create_gh_gl(ref: str = "main"):
@@ -29,6 +30,36 @@ def test_ls_parity() -> None:
 
     fa = list(map(lambda f: str(f.path), files_gl))
     fb = list(map(lambda f: str(f.path), files_gh))
+    assert fa == fb
+
+
+def test_ls_dir_parity() -> None:
+    print()
+    gh, gl = create_gh_gl(ref="dir-test")
+    files_gh: list[Directory] = [f for f in gh.ls() if isinstance(f, Directory)]
+    files_gl: list[Directory] = [f for f in gl.ls() if isinstance(f, Directory)]
+
+    fa1 = list(map(lambda f: f.name, files_gl))
+    fb1 = list(map(lambda f: f.name, files_gh))
+    assert fa1 == fb1
+
+    files_gh = gh.ls(cast(Directory, files_gh[0]).path)
+    files_gl = gl.ls(cast(Directory, files_gl[0]).path)
+
+    fa2 = list(map(lambda f: str(f.path), files_gl))
+    fb2 = list(map(lambda f: str(f.path), files_gh))
+    assert fa2 == fb2
+
+    assert fa1 != fa2
+    assert fb1 != fb2
+
+    print("one deeper ;)")
+    files_gh = gh.ls(cast(Directory, files_gh[0]).path)
+    files_gl = gl.ls(cast(Directory, files_gl[0]).path)
+
+    fa = list(map(lambda f: str(f.path), files_gl))
+    fb = list(map(lambda f: str(f.path), files_gh))
+
     assert fa == fb
 
 

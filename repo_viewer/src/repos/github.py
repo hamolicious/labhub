@@ -1,6 +1,7 @@
 import os
 from functools import partial
 from os import environ
+from pathlib import Path
 from typing import Optional
 
 from github import Github
@@ -19,19 +20,10 @@ class GitHubRepo(Repository):
     ) -> None:
         super().__init__(token, "https://github.com", ref)
 
-        self.__root_dir: Optional[Directory] = None
-
         self._project_path = project_path
         auth = Token(token)
         self._gh = Github(auth=auth)
         self._repo = self._gh.get_repo(project_path)
-
-    @property
-    def _root_dir(self) -> Directory:
-        if self.__root_dir is None:
-            self.__root_dir = self._walk_tree("/", self.ref)
-
-        return self.__root_dir
 
     def _get_raw_files(
         self, remote_directory: str, ref: str = "main"
@@ -72,6 +64,3 @@ class GitHubRepo(Repository):
                 directory.add_file(self._walk_tree(file_info.path, ref=ref))
 
         return directory
-
-    def ls(self, path: str = "") -> list[Directory | File]:
-        return self._root_dir.contents

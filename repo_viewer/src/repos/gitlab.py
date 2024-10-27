@@ -1,5 +1,6 @@
 import os
 from functools import partial
+from pathlib import Path
 from typing import Optional
 
 from gitlab import Gitlab, exceptions
@@ -17,18 +18,9 @@ class GitLabRepo(Repository):
     ) -> None:
         super().__init__(token, host, ref)
 
-        self.__root_dir: Optional[Directory] = None
-
         self._project_id = project_id
         self._gl = Gitlab(host, token)
         self._project = self._gl.projects.get(self._project_id)
-
-    @property
-    def _root_dir(self) -> Directory:
-        if self.__root_dir is None:
-            self.__root_dir = self._walk_tree("/", self.ref)
-
-        return self.__root_dir
 
     def _get_raw_files(
         self, remote_directory: str, ref: str = "main"
@@ -67,6 +59,3 @@ class GitLabRepo(Repository):
                 directory.add_file(self._walk_tree(path, ref=ref))
 
         return directory
-
-    def ls(self, path: str = "") -> list[Directory | File]:
-        return self._root_dir.contents
