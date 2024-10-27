@@ -1,23 +1,23 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Callable, Optional
 
 
 class File:
-    def __init__(self, name: str, path: Path | str, data: bytes):
+    def __init__(self, name: str, path: Path | str, data_closure: Callable[[], bytes]):
         self.name: str = name
         self.path: Path = Path(path)
 
-        self.data: bytes = data
+        self.data_closure: Callable[[], bytes] = data_closure
+        self._data: Optional[bytes] = None
 
-    def write(self, target_dir: Path, ignore_own_path: bool = False) -> None:
-        path = target_dir / self.path
+    def get_data(self) -> bytes:
+        print("~@", self.name, self.path, self._data)
 
-        if ignore_own_path:
-            path = target_dir
-
-        with open(path, "wb") as f:
-            f.write(self.data)
+        if self._data is None:
+            self._data = self.data_closure()
+        return self._data
 
     def __repr__(self):
         return self.name
@@ -27,10 +27,15 @@ class Directory:
     def __init__(self, name: str, path: Path | str, contents: list[File | Directory]):
         self.name: str = name
         self.path = path
-        self.contents: list[File | Directory] = contents
+        self._contents: list[File | Directory] = contents
+
+    @property
+    def contents(self) -> list[File | Directory]:
+        self._contents.sort(key=lambda f: f.name)
+        return self._contents
 
     def add_file(self, file: File | Directory) -> None:
-        self.contents.append(file)
+        self._contents.append(file)
 
     def __repr__(self):
         return f"{self.name}/"

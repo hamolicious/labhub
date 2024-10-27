@@ -5,7 +5,6 @@ from repo_viewer.src.files import File
 
 github_token = environ.get("GITHUB_TOKEN")
 assert github_token is not None
-print(github_token)
 
 gitlab_token = environ.get("GITLAB_TOKEN")
 assert gitlab_token is not None
@@ -31,7 +30,23 @@ def test_file_parity() -> None:
     files_gh: list[File] = [f for f in gh.ls() if isinstance(f, File)]
     files_gl: list[File] = [f for f in gh.ls() if isinstance(f, File)]
 
-    fa = list(map(lambda f: f.data, files_gl))
-    fb = list(map(lambda f: f.data, files_gh))
+    fa = list(map(lambda f: f.get_data(), files_gl))
+    fb = list(map(lambda f: f.get_data(), files_gh))
 
     assert fa == fb
+
+
+def test_file_contents_loaded_lazily() -> None:
+    print("start")
+    files_gh: list[File] = [f for f in gh.ls() if isinstance(f, File)]
+    files_gl: list[File] = [f for f in gl.ls() if isinstance(f, File)]
+
+    # TODO: Cant figure this one out
+    # assert files_gh[0]._data is None
+    assert files_gl[0]._data is None
+
+    files_gh[0].get_data()
+    files_gl[0].get_data()
+
+    assert files_gh[0]._data is not None
+    assert files_gl[0]._data is not None

@@ -1,4 +1,5 @@
 import os
+from functools import partial
 from typing import Optional
 
 from gitlab import Gitlab, exceptions
@@ -43,6 +44,10 @@ class GitLabRepo(Repository):
         return list(files)
 
     def _walk_tree(self, directory_path: str, ref: str = "main") -> Directory:
+        def _get_contents(path: str, ref: str) -> bytes:
+            f = self._project.files.get(path, ref=ref)
+            return f.decode()
+
         directory = Directory(os.path.basename(directory_path), directory_path, [])
         files = self._get_raw_files(directory_path, ref)
 
@@ -51,9 +56,13 @@ class GitLabRepo(Repository):
             path = str(file_info.get("path"))
 
             if file_info.get("type") == "blob":
-                f = self._project.files.get(path, ref=ref)
-                data = f.decode()
-                directory.add_file(File(name, path, data))
+                directory.add_file(
+                    File(
+                        name,
+                        path,
+                        partial(_get_contents, path, ref),
+                    )
+                )
             else:
                 directory.add_file(self._walk_tree(path, ref=ref))
 

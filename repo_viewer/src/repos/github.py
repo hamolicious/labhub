@@ -1,4 +1,5 @@
 import os
+from functools import partial
 from os import environ
 from typing import Optional
 
@@ -51,17 +52,20 @@ class GitHubRepo(Repository):
         return []
 
     def _walk_tree(self, directory_path: str, ref: str = "main") -> Directory:
+        def _get_contents(file: ContentFile) -> bytes:
+            print("fuck")
+            return file.decoded_content
+
         directory = Directory(os.path.basename(directory_path), directory_path, [])
         files = self._get_raw_files(directory_path, ref)
 
         for file_info in files:
-            print(file_info, file_info.type)
             if file_info.type == "file":
                 directory.add_file(
                     File(
                         file_info.name,
                         file_info.path,
-                        file_info.decoded_content,
+                        data_closure=partial(_get_contents, file_info),
                     )
                 )
             else:
