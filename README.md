@@ -1,3 +1,6 @@
+[![GitHub Repo stars](https://img.shields.io/github/stars/hamolicious/labhub?style=flat-square&label=Github%20Stars)](https://github.com/hamolicious/labhub)
+[![PyPI - Version](https://img.shields.io/pypi/v/labhub?style=flat-square)](https://pypi.org/project/labhub/)
+
 # labhub
 
 Seamlessly work with with Github, Gitlab and self-hosted Gitlab repositories using one interface.
