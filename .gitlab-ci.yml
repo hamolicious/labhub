@@ -1,6 +1,8 @@
 include:
   - project: "gitlab/default-pipelines"
     file: "/gitlab-ci/PyPi.gitlab-ci.yml"
+  - project: "gitlab/default-pipelines"
+    file: "/gitlab-ci/mirror.gitlab-ci.yml"
 
 test:
   stage: test
@@ -12,3 +14,9 @@ test:
 
   script:
     - pytest -vv
+
+mirror_to_github:
+  needs:
+    - publish
+    - test
+  when: on_success
