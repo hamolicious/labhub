@@ -1,3 +1,6 @@
+variables:
+  GITHUB_MIRROR_URL: "/hamolicious/labhub.git"
+
 include:
   - project: "gitlab/default-pipelines"
     file: "/gitlab-ci/PyPi.gitlab-ci.yml"
