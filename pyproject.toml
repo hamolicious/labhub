@@ -1,6 +1,6 @@
 [project]
 name = "labhub"
-version = "1.0.0"
+version = "1.0.1"
 authors = [{ name = "hamolicious", email = "hamolicious@hamolicious.net" }]
 description = "Seamlessly work with with Github, Gitlab and self-hosted Gitlab repositories using one interface"
 readme = "README.md"
@@ -15,9 +15,9 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 
-# [project.urls]
-# Homepage = "https://github.com/pypa/sampleproject"
-# Issues = "https://github.com/pypa/sampleproject/issues"
+[project.urls]
+Homepage = "https://github.com/hamolicious/labhub"
+Issues = "https://github.com/hamolicious/labhub/issues"
 
 [build-system]
 requires = ["hatchling"]
