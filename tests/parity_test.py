@@ -11,8 +11,12 @@ def create_gh_gl(ref: str = "main"):
     gitlab_token = environ.get("GITLAB_TOKEN")
     assert gitlab_token is not None
 
+    url = environ.get("GITLAB_HOST")
+    if url is None:
+        raise ValueError("$GITLAB_HOST is not defined")
+
     gh = GitHubRepo("hamolicious/test-repo", github_token, ref=ref)
-    gl = GitLabRepo(53, gitlab_token, host="https://gitlab.slayhouse.net", ref=ref)
+    gl = GitLabRepo(53, gitlab_token, host=url, ref=ref)
     return gh, gl
 
 
