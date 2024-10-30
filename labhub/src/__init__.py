@@ -1,2 +1,2 @@
 from .files import Directory, File
-from .repos import GitHubRepo, GitLabRepo
+from .repos import GitHubRepo, GitLabRepo, Repository
