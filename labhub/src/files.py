@@ -13,8 +13,6 @@ class File:
         self._data: Optional[bytes] = None
 
     def get_data(self) -> bytes:
-        print("~@", self.name, self.path, self._data)
-
         if self._data is None:
             self._data = self.data_closure()
         return self._data

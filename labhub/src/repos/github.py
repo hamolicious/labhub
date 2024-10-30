@@ -45,7 +45,6 @@ class GitHubRepo(Repository):
 
     def _walk_tree(self, directory_path: str, ref: str = "main") -> Directory:
         def _get_contents(file: ContentFile) -> bytes:
-            print("fuck")
             return file.decoded_content
 
         directory = Directory(os.path.basename(directory_path), directory_path, [])

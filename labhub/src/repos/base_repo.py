@@ -29,7 +29,6 @@ class Repository:
         curr_dir: Directory = self._root_dir
         for component in components:
             for file in curr_dir.contents:
-                print(component, file.name)
                 if component == file.name and isinstance(file, Directory):
                     curr_dir = file
 
