@@ -57,7 +57,6 @@ class GitLabRepo(Repository):
                     )
                 )
             else:
-                # directory.add_file(self._walk_tree(path, ref=ref))
-                directory.add_file(Directory(name, path, []))
+                directory.add_file(self._walk_tree(path, ref=ref))
 
         return directory

@@ -60,7 +60,6 @@ class GitHubRepo(Repository):
                     )
                 )
             else:
-                # directory.add_file(self._walk_tree(file_info.path, ref=ref))
-                directory.add_file(Directory(file_info.name, file_info.path, []))
+                directory.add_file(self._walk_tree(file_info.path, ref=ref))
 
         return directory
