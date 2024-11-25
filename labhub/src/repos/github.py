@@ -1,8 +1,5 @@
 import os
-from functools import partial
-from os import environ
-from pathlib import Path
-from typing import Optional
+from typing import Callable
 
 from github import Github
 from github.Auth import Token
@@ -44,8 +41,11 @@ class GitHubRepo(Repository):
         return []
 
     def _walk_tree(self, directory_path: str, ref: str = "main") -> Directory:
-        def _get_contents(file: ContentFile) -> bytes:
-            return file.decoded_content
+        def _get_contents(file: ContentFile) -> Callable[[], bytes]:
+            def _closure() -> bytes:
+                return file.decoded_content
+
+            return _closure
 
         directory = Directory(os.path.basename(directory_path), directory_path, [])
         files = self._get_raw_files(directory_path, ref)
@@ -56,10 +56,11 @@ class GitHubRepo(Repository):
                     File(
                         file_info.name,
                         file_info.path,
-                        data_closure=partial(_get_contents, file_info),
+                        data_closure=_get_contents(file_info),
                     )
                 )
             else:
-                directory.add_file(self._walk_tree(file_info.path, ref=ref))
+                # directory.add_file(self._walk_tree(file_info.path, ref=ref))
+                directory.add_file(Directory(file_info.name, file_info.path, []))
 
         return directory

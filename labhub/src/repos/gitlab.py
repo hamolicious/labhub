@@ -1,7 +1,5 @@
 import os
-from functools import partial
-from pathlib import Path
-from typing import Optional
+from typing import Callable
 
 from gitlab import Gitlab, exceptions
 
@@ -36,9 +34,12 @@ class GitLabRepo(Repository):
         return list(files)
 
     def _walk_tree(self, directory_path: str, ref: str = "main") -> Directory:
-        def _get_contents(path: str, ref: str) -> bytes:
-            f = self._project.files.get(path, ref=ref)
-            return f.decode()
+        def _get_contents(path: str, ref: str) -> Callable[[], bytes]:
+            def _closure() -> bytes:
+                f = self._project.files.get(path, ref=ref)
+                return f.decode()
+
+            return _closure
 
         directory = Directory(os.path.basename(directory_path), directory_path, [])
         files = self._get_raw_files(directory_path, ref)
@@ -52,10 +53,11 @@ class GitLabRepo(Repository):
                     File(
                         name,
                         path,
-                        partial(_get_contents, path, ref),
+                        _get_contents(path, ref),
                     )
                 )
             else:
-                directory.add_file(self._walk_tree(path, ref=ref))
+                # directory.add_file(self._walk_tree(path, ref=ref))
+                directory.add_file(Directory(name, path, []))
 
         return directory

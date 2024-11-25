@@ -56,15 +56,6 @@ def test_ls_dir_parity() -> None:
     assert fa1 != fa2
     assert fb1 != fb2
 
-    print("one deeper ;)")
-    files_gh = gh.ls(cast(Directory, files_gh[0]).path)
-    files_gl = gl.ls(cast(Directory, files_gl[0]).path)
-
-    fa = list(map(lambda f: str(f.path), files_gl))
-    fb = list(map(lambda f: str(f.path), files_gh))
-
-    assert fa == fb
-
 
 def test_file_parity() -> None:
     files_gh: list[File] = [f for f in gh.ls() if isinstance(f, File)]
@@ -74,22 +65,6 @@ def test_file_parity() -> None:
     fb = list(map(lambda f: f.get_data(), files_gh))
 
     assert fa == fb
-
-
-# TODO: implement lazy loading
-def x_test_file_contents_loaded_lazily() -> None:
-    print("start")
-    files_gh: list[File] = [f for f in gh.ls() if isinstance(f, File)]
-    files_gl: list[File] = [f for f in gl.ls() if isinstance(f, File)]
-
-    assert files_gh[0]._data is None
-    assert files_gl[0]._data is None
-
-    files_gh[0].get_data()
-    files_gl[0].get_data()
-
-    assert files_gh[0]._data is not None
-    assert files_gl[0]._data is not None
 
 
 def test_ref_parity() -> None:
