@@ -1,6 +1,6 @@
 [project]
 name = "labhub"
-version = "1.1.0"
+version = "1.2.0"
 authors = [{ name = "hamolicious", email = "hamolicious@hamolicious.net" }]
 description = "Seamlessly work with with Github, Gitlab and self-hosted Gitlab repositories using one interface"
 readme = "README.md"
